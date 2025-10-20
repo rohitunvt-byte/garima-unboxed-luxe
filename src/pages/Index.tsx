@@ -1,12 +1,48 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Confetti } from '@/components/Confetti';
+import { LockScreen } from '@/components/LockScreen';
+import { TheplaModal } from '@/components/TheplaModal';
+import { Hero } from '@/components/Hero';
+import { Timeline } from '@/components/Timeline';
+import { Playground } from '@/components/Playground';
+import { Finale } from '@/components/Finale';
 
 const Index = () => {
+  const [isLocked, setIsLocked] = useState(true);
+  const [showThepla, setShowThepla] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Elegant Confetti Background */}
+      <Confetti />
+
+      {/* Lock Screen */}
+      {isLocked && (
+        <LockScreen
+          onUnlock={() => setIsLocked(false)}
+          onShowThepla={() => setShowThepla(true)}
+        />
+      )}
+
+      {/* Thepla Request Modal */}
+      {showThepla && <TheplaModal onClose={() => setShowThepla(false)} />}
+
+      {/* Main Content - Only visible after unlock */}
+      {!isLocked && (
+        <div className="relative z-10">
+          <Hero />
+          <Timeline />
+          <Playground />
+          <Finale />
+
+          {/* Footer */}
+          <footer className="py-8 text-center text-sm font-body text-muted-foreground border-t border-border/50">
+            <p>
+              © 2025. Made with ❤️. | Can't find the hidden message? Rate the website!
+            </p>
+          </footer>
+        </div>
+      )}
     </div>
   );
 };
